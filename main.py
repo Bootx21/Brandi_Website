@@ -62,7 +62,7 @@ def query_blog():
         db.session.commit()
     headline= [39, 'We need fooooood', '01/05/2025', 'Marina', "Marina's Diet", 'tom.gif', 'thmtom.gif', '<p>Hello</p>']
     # headline = next(_ for _ in all_posts if _[0] == int(all_posts[-1][7]))
-    return all_posts, posts_len, headline
+    return all_posts, posts_len, headline, posts
 
 # def query_carousel():
 #     all_entries = []
