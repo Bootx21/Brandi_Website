@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootstrap Components</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar bg-white navbar-default navbar-fixed-top sticky-top navbar-expand-md ">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/index.html"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-pulse-fill" viewBox="0 0 16 16">
+          <path d="M1.475 9C2.702 10.84 4.779 12.871 8 15c3.221-2.129 5.298-4.16 6.525-6H12a.5.5 0 0 1-.464-.314l-1.457-3.642-1.598 5.593a.5.5 0 0 1-.945.049L5.889 6.568l-1.473 2.21A.5.5 0 0 1 4 9z"/>
+          <path d="M.88 8C-2.427 1.68 4.41-2 7.823 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C11.59-2 18.426 1.68 15.12 8h-2.783l-1.874-4.686a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8z"/>
+          </svg> Flourishing Stuff</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link text-black active" aria-current="page" href="#showcase">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#info1">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Services
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">One Service</a></li>
+                <li><a class="dropdown-item" href="#">Another Service</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else that's cool but different</a></li>
+              </ul>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link" href="#">Blog</a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link" href="#">Brands</a>
+            </li>
+          </ul>
+          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            (616) 459-7036
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+      <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
+    </svg></a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+      <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+    </svg></a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+      <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+    </svg></a></li>
+           </ul>
+        </div>
+      </div>
+    </nav>
+<!--
+  <div class="container my-3 rounded-3">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 gradient-background border shadow-lg">
+      <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+        <h1 class="display-4 fw-bold lh-1 text-body-emphasis">Balanced Health</h1>
+        <p class="lead">Take the first step of your wellness journey today</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Take your first step</button>
+          <button type="button" class="btn btn-light btn-lg px-4">Contact Us</button>
+        </div>
+      </div>
+      <div class="col-lg-4 offset-lg-1 p-0 rounded-3 overflow-hidden shadow-lg">
+          <img  class="rounded-lg-3" src="/assets/images/bridge.jpeg" alt="" height="320">
+      </div>
+    </div>
+  </div>
+-->
+  <section id="showcase">
+    <div class="container pt-5">
+      <div class="row">
+        <div class="col-md-6 col-sm-6">
+          <div class="showcase-left">
+            <img src="assets/images/Brandai.jpeg">
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+            <div class="showcase-right mt-5">
+              <h1 class="display-4 fw-bold lh-1 text-body-emphasis">Balanced Health</h1>
+                <p class="lead">Take the first step of your wellness journey today</p>
+                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur euismod erat vitae ornare. Phasellus rhoncus maximus fermentum. Phasellus lectus ipsum, feugiat in commodo sit amet, efficitur a leo. </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+
+                </div>
+            </div>
+            <br>
+            <a class="btn btn-primary btn-lg px-4 me-md-2 fw-bold showcase-btn">Take your first step</a>
+            <a class="btn btn-light btn-lg px-4 showcase-btn">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonial">
+    <div class="container">
+      <p>"Phasellus lectus ipsum, feugiat in commodo sit amet, efficitur a leo. Cras consequat, ipsum quis sollicitudin porta, est libero consequat justo, ut rhoncus lacus magna quis nisi."</p>
+      <p class="customer"> - John Doe </p>
+    </div>
+  </section>
+
+  <section id="info1">
+  <div class="container text-center" >
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 py-3">
+        <div class="col">
+        <div class="feature border rounded-3">
+            <div class="feature-icon  justify-content-center text-bg-primary bg-gradient fs-2">
+              <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"></use></svg>
+            </div>
+            <h3 class="fs-2 text-body-emphasis">Weight Loss</h3>
+            <p>Medical Weight loss with prescripiton semaglutide to weriwe</p>
+            <a href="#" class="mb-2 icon-link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+              </svg>
+            </a>
+          </div>
+            </div>
+        <div class="col">
+        <div class="feature border rounded-3">
+          <div class="feature-icon align-items-center justify-content-center text-bg-primary bg-gradient fs-2">
+            <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"></use></svg>
+          </div>
+          <h3 class="fs-2 text-body-emphasis">Aesthetics</h3>
+          <p>Revitalize your skin with prescription creams</p>
+          <a href="#" class="mb-2 icon-link">
+            Learn More
+            <svg xmlns="http://www.w3.org/2000/svg" width="14"  fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+          </a>
+        </div>
+        </div>
+        <div class="col">
+          <div class="feature border rounded-3">
+            <div class="feature-icon justify-content-center text-bg-primary bg-gradient fs-2">
+              <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"></use></svg>
+            </div>
+            <h3 class="fs-2 text-body-emphasis">Women's HRT</h3>
+            <p>Restore balance and harmony with hormone replacement therapy</p>
+            <a href="#" class="mb-2 icon-link">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+              </svg>
+          </a>
+        </div>
+          </div>
+        <div class="col">
+        <div class="feature border rounded-3">
+          <div class="feature-icon align-items-center justify-content-center text-bg-primary bg-gradient fs-2">
+            <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"></use></svg>
+          </div>
+          <h3 class="fs-2 text-body-emphasis">Testosterone</h3>
+          <p>Restore vigor and vitality with testosterone replacement therapy</p>
+          <a href="#" class="mb-2 icon-link">
+            Learn More
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+          </a>
+        </div>
+          </div>
+
+      </div>
+  </div>
+  </section>
+<!-- carousel attempt
+<div id="carouselExample" class="carousel slide">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Card title1</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Card title2</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Card title3</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Card title4</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Card title5</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div> -->
+
+<div class="container mb-3">
+  <div class="px-4 pt-2 mt-2 text-center">
+      <h4 style="font-family: Times New Roman; text-transform: uppercase; color:pink"> Why Choose Brandi?</h4>
+      <h1 class="display-5  text-body-emphasis" style="font-family: Times New Roman, Times, serif">We make your health easy!!</h1>
+      <div class="col-lg-10 mx-auto">
+        <p class="lead">
+  At Balanced Health, we believe optimizing your health and well-being should be simple and accessible. That’s why we offer a wide range of expert services designed to help you achieve your goals effortlessly—from personalized medical weight loss programs and hormone therapy to cutting-edge aesthetic solutions that rejuvenate and enhance your skin.
+  <br><br>
+  Whether you’re striving to shed excess weight, restore hormonal balance, or improve your skin’s texture and radiance, our convenient telehealth platform allows you to receive top-quality care from the comfort of your home. At Balanced Health, we make it easy to take control of your health and beauty journey with customized treatments tailored to your unique needs.</p>
+      </div>
+    </div>
+<div class="container" id='caaaards' style="width: 100%; display: flex; align-items: stretch; justify-content: space-around;">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 pb-3" >
+    <div class="col">
+      <div class="card h-100" style="width: auto;">
+        <div class="card-body">
+          <h5 class="card-title">Telehealth Appointments</h5>
+          <p class="card-text">Access professional healthcare services without needing in-person visits. Our telehealth model allows you to consult with our experts from anywhere.</p>
+        </div>
+      </div>
+      </div>
+      <div class="col">
+      <div class="card h-100" style="height: auto; width: auto;">
+        <div class="card-body">
+          <h5 class="card-title">Over zero five-star reviews</h5>
+          <p class="card-text">Our patients’ satisfaction speaks volumes. With more than 0 five-star reviews, we are proud to provide trusted, high-quality care that our patients value.</p>
+        </div>
+      </div>
+      </div>
+        <div class = "col">
+      <div class="card h-100" style="width: auto;">
+        <div class="card-body">
+          <h5 class="card-title">Personalized treatment plans</h5>
+          <p class="card-text">Every patient is unique, and so are their health needs. We develop individualized treatment plans based on your specific health goals and lifestyle.</p>
+        </div>
+      </div>
+        </div>
+    <div class="col">
+      <div class="card h-100" style="width: auto;">
+        <div class="card-body">
+          <h5 class="card-title">Affordable and flexible payment options</h5>
+          <p class="card-text">We offer convenient payment plans. With flexible payment plans, you can get the necessary treatments without breaking the bank.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100" style="width: auto;">
+        <div class="card-body">
+          <h5 class="card-title">Licensed in Michigan</h5>
+          <p class="card-text">We are fully licensed to provide care for residents of Michigan, ensuring safe, state-compliant services backed by local providers.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100get" style="width: auto;">
+        <div class="card-body">
+          <h5 class="card-title">No monthly memberships or hidden fees</h5>
+          <p class="card-text">We value transparency. Our services are straightforward, with no hidden charges or membership fees.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+  </div>
+
+
+
+    <div class="container border-round-3" id="footer">
+      <footer class="py-5 px-5">
+        <div class="row">
+          <div class="col-6 col-md-3 mb-3">
+            <h5>Section</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+            </ul>
+          </div>
+
+          <div class="col-6 col-md-3 mb-3">
+            <h5>Section</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-5 offset-md-1 mb-3">
+            <form>
+              <h5>Subscribe to our newsletter</h5>
+              <p>Monthly digest of what's new and exciting from us.</p>
+              <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                <label for="newsletter1" class="visually-hidden">Email address</label>
+                <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+                <button class="btn btn-primary" type="button">Subscribe</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+          <p>&copy; 2024 Flourishing Stuff, Inc. All rights reserved.</p>
+          <ul class="list-unstyled d-flex">
+            <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
+            <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
+            <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"/></svg></a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.js"
+          integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+          crossorigin="anonymous"></script>
+  <script>
+    ScrollReveal().reveal('.navbar',{duration: 2000, origin: 'bottom'});
+    ScrollReveal().reveal('.showcase-left',{duration: 2000, origin: 'left', distance:'300px'});
+    ScrollReveal().reveal('.showcase-right',{duration: 2000, origin: 'right', distance:'300px'});
+    ScrollReveal().reveal('.showcase-btn',{duration: 2000, delay:2000, origin: 'bottom', distance:'50px'});
+    ScrollReveal().reveal('#testimonial div',{duration: 2000, delay: 1000, origin: 'top', distance:'30px'});
+    ScrollReveal().reveal('#caaaards',{duration: 2000, origin: 'bottom', distance:'200px', viewFactor: 0.3});
+
+  </script>
+
+</body>
+
+</html>

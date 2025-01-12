@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+{% block title %}Flourishing Seasons {% endblock %}
+{% block content %}
+{% include 'header.html' %}
+
+{% if update==True %}
+<h1>Update an existing Blog post</h1>
+<div class="container col-md-12 pt-4">
+  <form action="{{ url_for('update', kind='blog') }}" enctype="multipart/form-data" method="POST" class="col-12 rounded-3" style="height: stretch">
+    <div class="row">
+      <div class="col-md-4 form-floating mb-3" >
+        <input class="form-control" value="{{title}}" placeholder="Title" name="title"/>
+        <label class="mx-2">Post Title</label>
+      </div>
+
+      <div class="col-md-4 form-floating mb-3">
+        <input class="form-control" value="{{date}}" placeholder="Date" name="date"/>
+        <label class="mx-2">Date</label>
+      </div>
+
+      <div class="col-md-4 form-floating mb-3">
+        <input class="form-control" value="{{author}}" placeholder="author" name="author"/>
+        <label class="mx-2">Author</label>
+      </div>
+
+      <div class="col-md-4 mb-3 ">
+        <input placeholder="Category" value="{{category}}" name="category"/>
+      </div>
+
+      <div class="col-md-2">
+        <input hidden="hidden" name="post_id" value="{{post_id}}">
+      </div>
+
+      <div class="col-md-2">
+        <input type="checkbox" id="featured" name="featured" >
+        <label for="featured">Featured?</label>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <input type="file" class="form-control"  name="picture">
+      </div>
+
+      <div class="col-md-12 form-floating mb-3">
+        <script>
+          tinymce.init({
+            selector: 'textarea',
+            plugins: 'image code',
+            /* Enable title field in the Image dialog */
+            image_title: true,
+            /* Enable automatic uploads of images represented by blob or data URIs */
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            /* And here's our custom image picker */
+            file_picker_callback: (cb, value, meta) => {
+              const input = document.createElement('input');
+              input.setAttribute('type', 'file');
+              input.setAttribute('accept', 'image/*');
+
+              input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+
+                // Create a FormData object to send the file
+                const formData = new FormData();
+                formData.append('file', file);
+
+                // Upload the image to the server
+                fetch('/upload', {
+                  method: 'POST',
+                  body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.location) {
+                    // Image uploaded successfully, pass the URL to TinyMCE
+                    cb(data.location);
+                  } else {
+                    alert('Upload failed');
+                  }
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                });
+              });
+
+              input.click();
+            },
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+            plugins: [
+              // Core editing features
+              'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+              // Your account includes a free trial of TinyMCE premium features
+              // Try the most popular premium features until Jan 17, 2025:
+              'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
+            ],
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+              { value: 'First.Name', title: 'First Name' },
+              { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+          });
+        </script><!-- TinyMCE Script -->
+        <textarea name="body">
+          {{body}}
+        </textarea>
+      </div>
+
+      <div class="mb-3">
+        <button class="w-100 btn btn-primary" style="" type="submit">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% else %}
+<h1>Create a New Blog Post</h1>
+<div class="container">
+  <div class="row">
+    <div class="container col-md-12 pt-4">
+      <form action="{{ url_for('admin', kind='blog') }}" enctype="multipart/form-data" method="POST" class="col-12 rounded-3" style="height: stretch">
+        <div class="row">
+
+          <div class="col-md-4 form-floating mb-3" >
+            <input class="form-control" placeholder="Title" name="title"/>
+            <label class="mx-2">Post Title</label>
+          </div>
+
+          <div class="col-md-4 form-floating mb-3">
+            <input class="form-control" value="{{date}}" placeholder="Date" name="date"/>
+            <label class="mx-2">Date</label>
+          </div>
+
+          <div class="col-md-4 form-floating mb-3">
+            <input class="form-control" placeholder="author" name="author"/>
+            <label class="mx-2">Author</label>
+          </div>
+
+          <div class="col-md-4 mb-3 ">
+            <input placeholder="Category" list=categories name="category"/>
+            <datalist id=categories>
+              <option value="Nutrition"></option>
+              <option value="Body Health"></option>
+            </datalist>
+          </div>
+
+          <div class="col-md-8 mb-3">
+            <input type="file" class="form-control" name="picture">
+          </div>
+
+          <div class="col-md-12 form-floating mb-3">
+            <script>
+              tinymce.init({
+                selector: 'textarea',
+                plugins: 'image code',
+                /* Enable title field in the Image dialog */
+                image_title: true,
+                /* Enable automatic uploads of images represented by blob or data URIs */
+                automatic_uploads: true,
+                file_picker_types: 'image',
+                /* And here's our custom image picker */
+                file_picker_callback: (cb, value, meta) => {
+                  const input = document.createElement('input');
+                  input.setAttribute('type', 'file');
+                  input.setAttribute('accept', 'image/*');
+
+                  input.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+
+                    // Create a FormData object to send the file
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    // Upload the image to the server
+                    fetch('/upload', {
+                      method: 'POST',
+                      body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                      if (data.location) {
+                        // Image uploaded successfully, pass the URL to TinyMCE
+                        cb(data.location);
+                      } else {
+                        alert('Upload failed');
+                      }
+                    })
+                    .catch(error => {
+                      console.error('Error:', error);
+                    });
+                  });
+
+                  input.click();
+                },
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                plugins: [
+                  // Core editing features
+                  'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+                  // Your account includes a free trial of TinyMCE premium features
+                  // Try the most popular premium features until Jan 17, 2025:
+                  'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
+                ],
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                tinycomments_mode: 'embedded',
+                tinycomments_author: 'Author name',
+                mergetags_list: [
+                  { value: 'First.Name', title: 'First Name' },
+                  { value: 'Email', title: 'Email' },
+                ],
+                ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+              });
+            </script><!-- TinyMCE Script -->
+            <textarea name="body"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <button class="w-100 btn btn-primary" style="" type="submit">Submit</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    {% endif %}
+
+  <h1>My Blog Posts</h1>
+    <ul>
+      {% if empty==True %}
+      <li>You have no posts</li>
+      {% else %}
+      {%  for _ in range(0,posts_len-1) %}
+      <li><a href="{{ url_for('delete', post_id=posts[_][0]) }}">Delete</a>  {{ posts[_][1] }}, {{ posts[_][2] }}, {{ posts[_][3] }}, {{ posts[_][4] }}  <a href="{{ url_for('update', kind='blog', post_id=posts[_][0]) }}">Update Post</a></li>
+      {% endfor %} {% endif %}
+    </ul>
+    <hr>
+    <h1>Update Recommended Products</h1>
+    <div class="container">
+      <div class="row">
+        <div class="container col-md-12 pt-4">
+          <form action="{{ url_for('admin', kind='carousel') }}" enctype="multipart/form-data" method="POST" class="col-12 rounded-3" style="height: stretch">
+            <div class="row">
+
+              <div class="col-md-4 form-floating mb-3" >
+                <input class="form-control" placeholder="Link" name="link">
+                <label class="mx-2">Product Link</label>
+              </div>
+
+              <div class="col-md-8 mb-3">
+                <input type="file" class="form-control" name="picture">
+
+              </div>
+
+              <div class="col-md-12 form-floating mb-3">
+                <script>
+                  tinymce.init({
+                    selector: 'textarea',
+                    plugins: 'image code',
+                    /* Enable title field in the Image dialog */
+                    image_title: true,
+                    /* Enable automatic uploads of images represented by blob or data URIs */
+                    automatic_uploads: true,
+                    file_picker_types: 'image',
+                    /* And here's our custom image picker */
+                    file_picker_callback: (cb, value, meta) => {
+                      const input = document.createElement('input');
+                      input.setAttribute('type', 'file');
+                      input.setAttribute('accept', 'image/*');
+
+                      input.addEventListener('change', (e) => {
+                        const file = e.target.files[0];
+
+                        // Create a FormData object to send the file
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        // Upload the image to the server
+                        fetch('/upload', {
+                          method: 'POST',
+                          body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                          if (data.location) {
+                            // Image uploaded successfully, pass the URL to TinyMCE
+                            cb(data.location);
+                          } else {
+                            alert('Upload failed');
+                          }
+                        })
+                        .catch(error => {
+                          console.error('Error:', error);
+                        });
+                      });
+
+                      input.click();
+                    },
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                    plugins: [
+                      // Core editing features
+                      'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+                      // Your account includes a free trial of TinyMCE premium features
+                      // Try the most popular premium features until Jan 17, 2025:
+                      'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
+                    ],
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                    tinycomments_mode: 'embedded',
+                    tinycomments_author: 'Author name',
+                    mergetags_list: [
+                      { value: 'First.Name', title: 'First Name' },
+                      { value: 'Email', title: 'Email' },
+                    ],
+                    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+                  });
+                </script> <!-- TinyMCE Script -->
+                <textarea name="body">Write description here...</textarea>
+              </div>
+              <div class="mb-3">
+                <button class="w-100 btn btn-primary" style="" type="submit">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <h1>Recommended Products</h1>
+    <ul>
+      {%  for _ in range(0,entries_len) %}
+      <li><a href="{{ url_for('delete', entry_id=entries[_][0]) }}">Delete</a>  {{ entries[_][1] }}, {{ entries[_][2] }}, {{ entries[_][3] }}, {{ entries[_][4] }}  <a href="{{ url_for('update', kind='carousel', entry_id=entries[_][0]) }}">Update Product</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
