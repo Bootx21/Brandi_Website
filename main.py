@@ -44,14 +44,10 @@ def logged_in():
         return redirect(url_for('login'))
 
 def query_blog():
-    all_posts = []
-    with app.app_context():
-        posts = db.session.execute(db.select(Post).order_by(desc(Post.id))).scalars()
-        for _ in posts:
-            all_posts.append([_.id, _.title, _.date, _.author, _.category, _.picture, _.thumb, _.body])
-
-    posts_len = len(all_posts)
-    print(posts_len)
+    #Get a list of the posts in backwards order so the newest ones get listed first.
+    #First entry in the DB controls the headline and feature 1&2 posts
+    posts = (Post.query.all())[::-1]
+    posts_len = len(posts)
     if posts_len < 2:
         print("!")
         first_post = Post(title="first post", author='nick', category='config', date='7/11/1981', body=1, picture="fistpost",
@@ -60,9 +56,32 @@ def query_blog():
         db.session.add(first_post)
         db.session.add(second_post)
         db.session.commit()
-    headline= [39, 'We need fooooood', '01/05/2025', 'Marina', "Marina's Diet", 'tom.gif', 'thmtom.gif', '<p>Hello</p>']
-    # headline = next(_ for _ in all_posts if _[0] == int(all_posts[-1][7]))
-    return all_posts, posts_len, headline, posts
+    hl = next(post for post in posts if post.id == int(posts[-1].body))
+    f1 = next(post for post in posts if post.id == int(posts[-1].thumb))
+    f2 = next(post for post in posts if post.id == int(posts[-1].picture))
+
+    return posts, posts_len, hl, f1, f2
+
+# def query_blog():
+#     all_posts = []
+#     with app.app_context():
+#         posts = db.session.execute(db.select(Post).order_by(desc(Post.id))).scalars()
+#         for _ in posts:
+#             all_posts.append([_.id, _.title, _.date, _.author, _.category, _.picture, _.thumb, _.body])
+#
+#     posts_len = len(all_posts)
+#     print(posts_len)
+#     if posts_len < 2:
+#         print("!")
+#         first_post = Post(title="first post", author='nick', category='config', date='7/11/1981', body=1, picture="fistpost",
+#                         thumb="firstpost")
+#         second_post = Post(title="Delete this after you make your first post", author='nick', category='', date='7/11/1981', body=2)
+#         db.session.add(first_post)
+#         db.session.add(second_post)
+#         db.session.commit()
+#     headline= [39, 'We need fooooood', '01/05/2025', 'Marina', "Marina's Diet", 'tom.gif', 'thmtom.gif', '<p>Hello</p>']
+#     # headline = next(_ for _ in all_posts if _[0] == int(all_posts[-1][7]))
+#     return all_posts, posts_len, headline
 
 # def query_carousel():
 #     all_entries = []
@@ -165,19 +184,20 @@ def upload_image():
 
 @app.route('/')
 def home():
-    posts, posts_len, headline = query_blog()
+    posts, posts_len, headline, f1, f2 = query_blog()
     # entries, entries_len = query_carousel()
     # return render_template("brandi.html", posts=posts, posts_len=posts_len, headline=headline, entries=entries, entries_len=entries_len)
-    return render_template("brandi.html", posts=posts, posts_len=posts_len, headline=headline)
+    return render_template("brandi.html", posts=posts, posts_len=posts_len, headline=headline, f1=f1, f2=f2)
+
 @app.route('/post/<int:post_id>')
 def get_post(post_id):
-    posts, posts_len, headline = query_blog()
+    posts, posts_len, headline, f1, f2 = query_blog()
     categories = []
-    for _ in posts:
-        if _[4] == "":
+    for post in posts:
+        if post.category == "":
             pass
-        elif _[4] not in categories:
-            categories.append(_[4])
+        elif post.category not in categories:
+            categories.append(post.category)
     print(categories)
     post = db.get_or_404(Post, post_id)
 
@@ -200,11 +220,11 @@ def login():
 
 @app.route('/blog')
 def blog():
-    posts, posts_len, headline = query_blog()
+    posts, posts_len, headline, f1, f2 = query_blog()
     # if posts_len == 0:
     #     return render_template('blog.html', posts=posts, empty=True)
     # else:
-    return render_template('blog.html', posts=posts, headline=headline, empty=False, posts_len=posts_len)
+    return render_template('blog.html', posts=posts, headline=headline, f1=f1, f2=f2, empty=False, posts_len=posts_len)
 
 @app.route('/logout')
 def logout():
@@ -219,7 +239,7 @@ def admin():
     logged_in()
     print('logged in')
     print(request.method)
-    posts, posts_len, headline = query_blog()
+    posts, posts_len, headline, f1, f2 = query_blog()
     # entries, entries_len = query_carousel()
     if request.method == 'GET':
         # return render_template('admin.html', posts=posts, posts_len=posts_len, TINY_API=TINY_API, date=CURRENT_DATE, entries=entries, entries_len=entries_len)
@@ -278,20 +298,22 @@ def delete():
 @app.route('/update', methods=['GET', 'POST'])
 def update():
     kind = request.args.get('kind')
-    print(kind)
+    print(kind, '1')
     if kind == 'blog':
         print(session.get('admin_logged_in'))
         logged_in()
         if request.method=='POST':
+            print('2!')
+            print('another 2')
             post_id = request.form['post_id']
-            try: #check to see if featured is checkmarked
-                ues = request.form['featured']
+            print(post_id)
+            if request.form['headline']:
+                print("Checked!")
                 headline = db.get_or_404(Post, 1)
                 headline.body = post_id
                 db.session.commit()
-            except:
-                pass
-            finally:
+            else:
+                print('didnt work')
                 with app.app_context():
                     post = db.get_or_404(Post, post_id)
                     post.title = request.form["title"]
@@ -308,18 +330,39 @@ def update():
                         print('used stock photo')
                         db.session.commit()
                     return redirect(url_for('admin'))
+            # try: #check to see if featured is checkmarked
+            #     ues = request.form['featured']
+            #     headline = db.get_or_404(Post, 1)
+            #     headline.body = post_id
+            #     db.session.commit()
+            # except:
+            #     pass
+            # finally:
+            #     with app.app_context():
+            #         post = db.get_or_404(Post, post_id)
+            #         post.title = request.form["title"]
+            #         post.date = request.form["date"]
+            #         post.author = request.form["author"]
+            #         post.category = request.form["category"]
+            #         post.body = request.form["body"]
+            #         file = request.files.get('picture')
+            #         if file and allowed_file(file.filename):
+            #             print('got file')
+            #             post.picture, post.thumb = get_pictures(file)
+            #             db.session.commit()
+            #         else:
+            #             print('used stock photo')
+            #             db.session.commit()
+            #         return redirect(url_for('admin'))
         elif request.method=='GET':
-            posts, posts_len, headline = query_blog()
+            print('GET')
+            posts, posts_len, headline, f1,f2 = query_blog()
             post_id = request.args.get('post_id')
-            with app.app_context():
-                post = db.get_or_404(Post, post_id)
-                title = post.title
-                date = post.date
-                author = post.author
-                category = post.category
-                body= post.body
-            return render_template('admin.html', update=True, posts=posts, posts_len= posts_len, post_id=post_id, author=author, title=title, category=category, body=body, date=date, TINY_API=TINY_API)
+            post = db.get_or_404(Post, post_id)
+
+            return render_template('admin.html', update=True, post=post, posts=posts, posts_len= posts_len, post_id=post_id, TINY_API=TINY_API)
     elif kind == 'carousel':
         print('not blog')
+        return redirect(url_for('admin'))
 if __name__ == "__main__":
     app.run(debug=False)

@@ -1,2 +1,2 @@
-list = [1,2,3,4]
-print(list[-1])
+list = ['n', 'i', 'c', 'k']
+print(list[::-1])

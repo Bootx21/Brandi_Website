@@ -103,8 +103,8 @@
             <div class="mb-4">
                 <h4 class="sidebar-title">Categories</h4>
                 <ul class="list-unstyled categories">
-                    {% for _ in categories %}
-                    <li><a href="#">{{_}}</a></li>
+                    {% for category in categories %}
+                    <li><a href="#">{{ category }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -112,13 +112,13 @@
             <div>
                 <h4 class="sidebar-title">Latest Posts</h4>
                 <ul class="list-unstyled">
-                    {% for _ in range(0,posts_len) %}
+                    {% for num in range(0,posts_len) %}
                     <li>
-                        <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="/post/{{posts[_][0]}}">
-                            <img src="/static/images/blog_images/{{ posts[_][6] }}" class="bd-placeholder-img" width="100%" height="96">
+                        <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="/post/{{posts[num].id}}">
+                            <img src="/static/images/blog_images/{{ posts[num].thumb }}" class="bd-placeholder-img" width="100%" height="96">
                             <div class="col-lg-8">
-                                <h6 class="mb-0">{{ posts[_][1] }}</h6>
-                                <small class="text-body-secondary">{{ posts[_][2] }}</small>
+                                <h6 class="mb-0">{{ posts[num].title }}</h6>
+                                <small class="text-body-secondary">{{ posts[num].date }}</small>
                             </div>
                         </a>
                     </li>

@@ -9,31 +9,41 @@
   <form action="{{ url_for('update', kind='blog') }}" enctype="multipart/form-data" method="POST" class="col-12 rounded-3" style="height: stretch">
     <div class="row">
       <div class="col-md-4 form-floating mb-3" >
-        <input class="form-control" value="{{title}}" placeholder="Title" name="title"/>
+        <input class="form-control" value="{{ post.title }}" placeholder="Title" name="title"/>
         <label class="mx-2">Post Title</label>
       </div>
 
       <div class="col-md-4 form-floating mb-3">
-        <input class="form-control" value="{{date}}" placeholder="Date" name="date"/>
+        <input class="form-control" value="{{ post.date }}" placeholder="Date" name="date"/>
         <label class="mx-2">Date</label>
       </div>
 
       <div class="col-md-4 form-floating mb-3">
-        <input class="form-control" value="{{author}}" placeholder="author" name="author"/>
+        <input class="form-control" value="{{ post.author }}" placeholder="author" name="author"/>
         <label class="mx-2">Author</label>
       </div>
 
       <div class="col-md-4 mb-3 ">
-        <input placeholder="Category" value="{{category}}" name="category"/>
+        <input placeholder="Category" value="{{ post.category }}" name="category"/>
       </div>
 
       <div class="col-md-2">
-        <input hidden="hidden" name="post_id" value="{{post_id}}">
+        <input hidden="hidden" name="post_id" value="{{ post.post_id }}">
       </div>
 
       <div class="col-md-2">
-        <input type="checkbox" id="featured" name="featured" >
-        <label for="featured">Featured?</label>
+        <input type="checkbox" id="headline" name="headline ">
+        <label for="headline">Headline?</label>
+      </div>
+
+      <div class="col-md-2">
+        <input type="checkbox" id="featured1" name="featured1">
+        <label for="featured1">Featured 1?</label>
+      </div>
+
+      <div class="col-md-2">
+        <input type="checkbox" id="featured2" name="featured2">
+        <label for="featured2">Featured 2?</label>
       </div>
 
       <div class="col-md-6 mb-3">
@@ -103,7 +113,7 @@
           });
         </script><!-- TinyMCE Script -->
         <textarea name="body">
-          {{body}}
+          {{ post.body }}
         </textarea>
       </div>
 
@@ -128,7 +138,7 @@
           </div>
 
           <div class="col-md-4 form-floating mb-3">
-            <input class="form-control" value="{{date}}" placeholder="Date" name="date"/>
+            <input class="form-control" value="{{ date }}" placeholder="Date" name="date"/>
             <label class="mx-2">Date</label>
           </div>
 
@@ -228,8 +238,8 @@
       {% if empty==True %}
       <li>You have no posts</li>
       {% else %}
-      {%  for _ in range(0,posts_len-1) %}
-      <li><a href="{{ url_for('delete', post_id=posts[_][0]) }}">Delete</a>  {{ posts[_][1] }}, {{ posts[_][2] }}, {{ posts[_][3] }}, {{ posts[_][4] }}  <a href="{{ url_for('update', kind='blog', post_id=posts[_][0]) }}">Update Post</a></li>
+      {%  for num in range(0, posts_len-1) %}
+      <li><a href="{{ url_for('delete', post_id=posts[num].id) }}">Delete</a>  {{ posts[num].title }}, {{ posts[num].date }}, {{ posts[num].author }}, {{ posts[num].category }}  <a href="{{ url_for('update', kind='blog', post_id=posts[num].id) }}">Update Post</a></li>
       {% endfor %} {% endif %}
     </ul>
     <hr>
