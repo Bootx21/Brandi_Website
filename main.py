@@ -173,7 +173,7 @@ def get_post(post_id):
     print(categories)
     post = db.get_or_404(Post, post_id)
 
-    return render_template("post.html", post=post, posts=posts, categories=categories)
+    return render_template("post.html", post=post, posts=posts, posts_len=posts_len, categories=categories)
 
 @app.route('/login', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")  # Allow up to 5 login attempts per minute per IP address
