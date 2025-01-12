@@ -74,17 +74,25 @@ def query_blog():
 #     return all_entries, entries_len
 
 def get_pictures(file):
+    # give secure name to file
     filename = secure_filename(file.filename)
+    # save file and open it in PIL
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    image = Image.open(f"{UPLOAD_FOLDER}/{filename}")
+    image = image.convert('RGB')
+    #delete original file
+    os.remove(f"{UPLOAD_FOLDER}/{filename}")
+    # change file extension to and save as webp
+    filename = f"{filename.split('.')[0]}.webp"
+    image.save(f"static/images/blog_images/{filename}", 'webp')
     image = Image.open(f"static/images/blog_images/{filename}")
     # Define the thumbnail size as a tuple (width, height)
     thumbnail_size = (200, 200)
     # Create a thumbnail
     image.thumbnail(thumbnail_size, resample=Image.BOX)
     image.save(f"static/images/blog_images/thm{filename}")
-    picture = filename
     thumb = f"thm{filename}"
-    return picture, thumb
+    return filename, thumb
 
 def get_c_pictures(file):
     filename = secure_filename(file.filename)
