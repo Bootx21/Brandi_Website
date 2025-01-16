@@ -131,7 +131,7 @@ class Post(db.Model):
     title: Mapped[str] = mapped_column(String(250), nullable=False)
     date: Mapped[str] = mapped_column(String(250), nullable=False)
     author: Mapped[str] = mapped_column(String(250), nullable=True)
-    category: Mapped[str] = mapped_column(String(250), nullable=False)
+    category: Mapped[str] = mapped_column(String(250), nullable=True)
     picture: Mapped[str] = mapped_column(String(250), nullable=True)
     thumb: Mapped[str] = mapped_column(String(250), nullable=True)
     body: Mapped[str] = mapped_column(String(250), nullable=False)
@@ -330,7 +330,7 @@ def update():
                         post.picture, post.thumb = get_pictures(file)
                         db.session.commit()
                     else:
-                        print('used stock photo')
+                        print('used same photo')
                         db.session.commit()
                     return redirect(url_for('admin'))
             # try: #check to see if featured is checkmarked
