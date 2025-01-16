@@ -48,6 +48,8 @@ def query_blog():
     #First entry in the DB controls the headline and feature 1&2 posts
     posts = (Post.query.all())[::-1]
     posts_len = len(posts)
+    print(posts)
+    print(posts[-1].body)
     # Create 2 posts if there are no posts in the DB
     if posts_len < 2:
         print("!")
