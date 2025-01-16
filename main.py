@@ -62,10 +62,10 @@ def query_blog():
         # Populate temporary posts
         posts = (Post.query.all())[::-1]
         posts_len = len(posts)
-    print(posts[0].thumb, posts[0].picture, posts[0].body )
-    hl = next(post for post in posts if post.id == int(posts[0].body))
-    f1 = next(post for post in posts if post.id == int(posts[0].thumb))
-    f2 = next(post for post in posts if post.id == int(posts[0].picture))
+    print(posts[-1].thumb, posts[-1].picture, posts[-1].body )
+    hl = next(post for post in posts if post.id == int(posts[-1].body))
+    f1 = next(post for post in posts if post.id == int(posts[-1].thumb))
+    f2 = next(post for post in posts if post.id == int(posts[-1].picture))
 
     return posts, posts_len, hl, f1, f2
 
