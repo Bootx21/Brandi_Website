@@ -48,8 +48,6 @@ def query_blog():
     #First entry in the DB controls the headline and feature 1&2 posts
     posts = (Post.query.all())[::-1]
     posts_len = len(posts)
-    print(posts)
-    print(posts[-1].body)
     # Create 2 posts if there are no posts in the DB
     if posts_len < 2:
         print("!")
@@ -59,6 +57,9 @@ def query_blog():
         db.session.add(first_post)
         db.session.add(second_post)
         db.session.commit()
+        # Populate temporary posts
+        posts = (Post.query.all())[::-1]
+        posts_len = len(posts)
     hl = next(post for post in posts if post.id == int(posts[-1].body))
     f1 = next(post for post in posts if post.id == int(posts[-1].thumb))
     f2 = next(post for post in posts if post.id == int(posts[-1].picture))
