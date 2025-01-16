@@ -48,10 +48,11 @@ def query_blog():
     #First entry in the DB controls the headline and feature 1&2 posts
     posts = (Post.query.all())[::-1]
     posts_len = len(posts)
+    # Create 2 posts if there are no posts in the DB
     if posts_len < 2:
         print("!")
-        first_post = Post(title="first post", author='nick', category='config', date='7/11/1981', body=1, picture="fistpost",
-                        thumb="firstpost")
+        first_post = Post(title="first post", author='nick', category='config', date='7/11/1981', body=1, picture=1,
+                        thumb=1)
         second_post = Post(title="Delete this after you make your first post", author='nick', category='', date='7/11/1981', body=2)
         db.session.add(first_post)
         db.session.add(second_post)
@@ -61,27 +62,6 @@ def query_blog():
     f2 = next(post for post in posts if post.id == int(posts[-1].picture))
 
     return posts, posts_len, hl, f1, f2
-
-# def query_blog():
-#     all_posts = []
-#     with app.app_context():
-#         posts = db.session.execute(db.select(Post).order_by(desc(Post.id))).scalars()
-#         for _ in posts:
-#             all_posts.append([_.id, _.title, _.date, _.author, _.category, _.picture, _.thumb, _.body])
-#
-#     posts_len = len(all_posts)
-#     print(posts_len)
-#     if posts_len < 2:
-#         print("!")
-#         first_post = Post(title="first post", author='nick', category='config', date='7/11/1981', body=1, picture="fistpost",
-#                         thumb="firstpost")
-#         second_post = Post(title="Delete this after you make your first post", author='nick', category='', date='7/11/1981', body=2)
-#         db.session.add(first_post)
-#         db.session.add(second_post)
-#         db.session.commit()
-#     headline= [39, 'We need fooooood', '01/05/2025', 'Marina', "Marina's Diet", 'tom.gif', 'thmtom.gif', '<p>Hello</p>']
-#     # headline = next(_ for _ in all_posts if _[0] == int(all_posts[-1][7]))
-#     return all_posts, posts_len, headline
 
 # def query_carousel():
 #     all_entries = []
@@ -303,16 +283,36 @@ def update():
         print(session.get('admin_logged_in'))
         logged_in()
         if request.method=='POST':
+            post_id = request.form['post_id']
+            print(post_id,'this should be the post id')
             print('2!')
             print('another 2')
-            post_id = request.form['post_id']
-            print(post_id)
-            if request.form['headline']:
-                print("Checked!")
+
+            try:
+                hl = request.form['headline']
+                print("Checked hl")
                 headline = db.get_or_404(Post, 1)
                 headline.body = post_id
                 db.session.commit()
-            else:
+            except:
+                pass
+            try:
+                f1 = request.form['featured1']
+                print("Checked f1")
+                headline = db.get_or_404(Post, 1)
+                headline.thumb = post_id
+                db.session.commit()
+            except:
+                pass
+            try:
+                f2 = request.form['featured2']
+                print("Checked f2")
+                headline = db.get_or_404(Post, 1)
+                headline.picture = post_id
+                db.session.commit()
+            except:
+                pass
+            finally:
                 print('didnt work')
                 with app.app_context():
                     post = db.get_or_404(Post, post_id)
@@ -358,8 +358,8 @@ def update():
             print('GET')
             posts, posts_len, headline, f1,f2 = query_blog()
             post_id = request.args.get('post_id')
+            print(post_id)
             post = db.get_or_404(Post, post_id)
-
             return render_template('admin.html', update=True, post=post, posts=posts, posts_len= posts_len, post_id=post_id, TINY_API=TINY_API)
     elif kind == 'carousel':
         print('not blog')

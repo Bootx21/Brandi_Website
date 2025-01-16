@@ -22,11 +22,11 @@
       <div class="col-md-6">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary-emphasis">{{ posts[0].category }}</strong>
-            <h3 class="mb-0">{{ posts[0].title }}</h3>
-            <div class="mb-1 text-body-secondary">{{ posts[0].date }}</div>
-            <p class="card-text mb-auto">{{ posts[0].body }}</p>
-            <a href="/post/{{ posts[0].id }}" class="icon-link gap-1 icon-link-hover stretched-link">
+            <strong class="d-inline-block mb-2 text-primary-emphasis">{{ f1.category }}</strong>
+            <h3 class="mb-0">{{ f1.title | safe }}</h3>
+            <div class="mb-1 text-body-secondary">{{ f1.date }}</div>
+            <p class="card-text mb-auto">{{ f1.body | safe }}</p>
+            <a href="/post/{{ f1.id }}" class="icon-link gap-1 icon-link-hover stretched-link">
               Continue reading
               <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
             </a>
@@ -39,11 +39,11 @@
       <div class="col-md-6">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-success-emphasis">{{ posts[1].category}}</strong>
-            <h3 class="mb-0">{{ posts[1].title }}</h3>
-            <div class="mb-1 text-body-secondary">{{ posts[1].date }}</div>
-            <p class="mb-auto">{{ posts[1].body }}</p>
-            <a href="/post/{{ posts[1].id }}" class="icon-link gap-1 icon-link-hover stretched-link">
+            <strong class="d-inline-block mb-2 text-success-emphasis">{{ f2.category }}</strong>
+            <h3 class="mb-0">{{ f2.title | safe }}</h3>
+            <div class="mb-1 text-body-secondary">{{ f2.date }}</div>
+            <p class="mb-auto">{{ f2.body | safe }}</p>
+            <a href="/post/{{ f2.id }}" class="icon-link gap-1 icon-link-hover stretched-link">
               Continue reading
               <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
             </a>
