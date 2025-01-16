@@ -132,7 +132,7 @@ class Post(db.Model):
     date: Mapped[str] = mapped_column(String(250), nullable=False)
     author: Mapped[str] = mapped_column(String(250), nullable=True)
     category: Mapped[str] = mapped_column(String(250), nullable=False)
-    picture: Mapped[str] = mapped_column(String(250), unique=True, nullable=True)
+    picture: Mapped[str] = mapped_column(String(250), nullable=True)
     thumb: Mapped[str] = mapped_column(String(250), nullable=True)
     body: Mapped[str] = mapped_column(String(250), nullable=False)
 
