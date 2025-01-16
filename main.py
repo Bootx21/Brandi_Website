@@ -48,6 +48,8 @@ def query_blog():
     #First entry in the DB controls the headline and feature 1&2 posts
     posts = (Post.query.all())[::-1]
     posts_len = len(posts)
+    for _ in posts:
+        print(_.title)
     # Create 2 posts if there are no posts in the DB
     if posts_len < 2:
         print("!")
@@ -369,4 +371,4 @@ def update():
         print('not blog')
         return redirect(url_for('admin'))
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
