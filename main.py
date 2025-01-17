@@ -46,7 +46,8 @@ def logged_in():
 def query_blog():
     #Get a list of the posts in backwards order so the newest ones get listed first.
     #First entry in the DB controls the headline and feature 1&2 posts
-    posts = (Post.query.all())[::-1]
+    result = db.session.execute(db.select(Post).order_by(desc(Post.id)))
+    posts = result.scalars().all()
     posts_len = len(posts)
     for _ in posts:
         print(_.title)
