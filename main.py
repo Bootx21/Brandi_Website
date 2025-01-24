@@ -55,7 +55,7 @@ def query_blog():
         first_post = Post(title="config post", author='nick', category=None, date='7/11/1981', body=1,
                           preview='you shouldnt be seeing this', picture=1, thumb=1)
         second_post = Post(title="Delete this after you make your first post", author='nick', category=None,
-                           date='7/11/1981', body='You should delete this', preview='you shouldnt be seeing this')
+                           date='7/11/1981', body=1, picture=1, thumb=1 , preview='you shouldnt be seeing this')
         db.session.add(first_post)
         db.session.add(second_post)
         db.session.commit()
