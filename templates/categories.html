@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Flourishing Seasons {% endblock %}
+{% block content %}
+{% include 'header.html' %}
+
+<section id="posts">
+  <div class="container">
+    <div class="row post-row g-5">
+      <div class="col-md-9">
+        <h2>Posts about {{ category }}</h2>
+        {% for post in cat_posts %}
+        <div class="overlay-container">
+          <div class="row border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
+            <div class="content p-4 flex-column position-static">
+              <strong class="d-inline-block mb-2 text-primary-emphasis">{{ post.category }}</strong>
+              <h3 class="mb-0">{{ post.title | safe }}</h3>
+              <div class="mb-1 text-body-secondary">{{ post.date }}</div>
+              <p class="card-text mb-auto">{{ post.preview | safe }}</p>
+              <a href="/post/{{ post.id }}" class="icon-link gap-1 icon-link-hover stretched-link">
+                Continue reading
+                <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+              </a>
+            </div>
+            <div class="thumbnail-container">
+              <img src="/static/images/blog_images/{{ post.picture }}" alt="Thumbnail">
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <nav class="blog-pagination" aria-label="Pagination">
+          <a class="btn btn-outline-primary rounded-pill" href="#">Older</a>
+          <a class="btn btn-outline-secondary rounded-pill disabled" aria-disabled="true">Newer</a>
+        </nav>
+      </div>
+      {% include 'sidebar.html' %}
+    </div>
+  </div>
+</section>
+
+
+
+{% include 'footer.html' %}
+{% endblock %}

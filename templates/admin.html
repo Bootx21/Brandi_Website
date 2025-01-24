@@ -23,34 +23,24 @@
         <label class="mx-2">Author</label>
       </div>
 
-      <div class="col-md-4 mb-3 ">
+      <div class="col-md-4 mb-3 form-floating">
         <input placeholder="Category" value="{{ post.category }}" name="category"/>
-      </div>
-
-      <div class="col-md-2">
-        <input placeholder="post id" value="{{ post.id }}" name="post_id">
-      </div>
-
-      <div class="col-md-2">
-        <input type="checkbox" id="headline" name="headline">
-        <label for="headline">Headline?</label>
-      </div>
-
-      <div class="col-md-2">
-        <input type="checkbox" id="featured1" name="featured1">
-        <label for="featured1">Featured 1?</label>
-      </div>
-
-      <div class="col-md-2">
-        <input type="checkbox" id="featured2" name="featured2">
-        <label for="featured2">Featured 2?</label>
       </div>
 
       <div class="col-md-6 mb-3">
         <input type="file" class="form-control"  name="picture">
       </div>
 
-      <div class="col-md-12 form-floating mb-3">
+      <div class="col-md-2">
+        <select class="form-select"  name="headline">
+          <option selected>Add to top of blog?</option>
+          <option value="1">Headline</option>
+          <option value="2">Featured 1</option>
+          <option value="3">Featured 2</option>
+        </select>
+      </div>
+
+      <div class="col-md-10 form-floating mb-3">
         <script>
           tinymce.init({
             selector: 'textarea',
@@ -100,7 +90,7 @@
               'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
               // Your account includes a free trial of TinyMCE premium features
               // Try the most popular premium features until Jan 17, 2025:
-              'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
+
             ],
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
             tinycomments_mode: 'embedded',
@@ -115,7 +105,17 @@
         <textarea name="body">
           {{ post.body }}
         </textarea>
+
+        <div>
+          <input hidden="hidden" value="{{ post.id }}" name="post_id">
+        </div>
       </div>
+
+      <div class="col-md-2 mb-3">
+        <img src="static/images/blog_images/{{ post.thumb }}">
+        <h6>Current Picture</h6>
+      </div>
+
 
       <div class="mb-3">
         <button class="w-100 btn btn-primary" style="" type="submit">Submit</button>
@@ -209,7 +209,6 @@
                   'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
                   // Your account includes a free trial of TinyMCE premium features
                   // Try the most popular premium features until Jan 17, 2025:
-                  'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
                 ],
                 toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                 tinycomments_mode: 'embedded',
@@ -233,14 +232,42 @@
     </div>
     {% endif %}
 
-  <h1>My Blog Posts</h1>
+  <h1>Blog Posts (Click to edit)</h1>
     <ul>
       {% if empty==True %}
       <li>You have no posts</li>
       {% else %}
-      {%  for num in range(0, posts_len-1) %}
+      {% for post in posts[:-1] %}
+
+      <div class="overlay-container">
+        <div class="row">
+          <div class="col-sm-10">
+            <div class="row border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
+              <div class="content p-4 flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary-emphasis">{{ post.category }}</strong>
+                <h3 class="mb-0">{{ post.title | safe }}</h3>
+                <div class="mb-1 text-body-secondary">{{ post.date }}</div>
+                <p class="card-text mb-auto">{{ post.preview | safe }}...</p>
+                <a href="{{ url_for('update', kind='blog', post_id=post.id) }}" class="icon-link gap-1 icon-link-hover stretched-link">
+                  Continue reading
+                  <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                </a>
+              </div>
+              <div class="thumbnail-container">
+                <img src="/static/images/blog_images/{{ post.picture }}" alt="Thumbnail">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <a href="{{ url_for('delete', post_id=post.id) }}">Delete Post</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <!--{%  for num in range(0, posts_len-1) %}
       <li><a href="{{ url_for('delete', post_id=posts[num].id) }}">Delete</a>  {{ posts[num].title }}, {{ posts[num].date }}, {{ posts[num].author }}, {{ posts[num].category }}  <a href="{{ url_for('update', kind='blog', post_id=posts[num].id) }}">Update Post</a></li>
-      {% endfor %} {% endif %}
+      {% endfor %} -->
+      {% endif %}
     </ul>
     <hr>
 

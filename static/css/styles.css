@@ -1,5 +1,11 @@
+.navbar{
+    background-color: rgb(82, 179, 190, .95);
+    height: 7rem;
+
+}
+
 .contact-form{
-    background: url("/static/images/beach.webp");
+    background: url("/static/images/contact-form.jpg");
     background-size: cover;
     #background: linear-gradient(300deg, #00bfff, #000, #FFF);
 }
@@ -77,7 +83,7 @@ html {
 }
 
 .card-title {
-    color:pink;
+    color: rgb(82, 179, 190);
     font-family: "Times New Roman", Times, serif;
     }
 
@@ -106,9 +112,20 @@ html {
     color: #666;
 }
 
+
+.carousel {
+    position: relative;
+    height: 400px;
+}
+
+.carousel-inner {
+    display: flex;
+    align-items: center;
+    min-height: 100%;
+}
 .carousel-indicators {
-  position: static; /* Remove absolute positioning */
-  margin-top: 20px; /* Add some spacing below the carousel */
+  position: absolute; /* Remove absolute positioning */
+  bottom: -30px;
   display: flex;
   justify-content: center; /* Center the indicators horizontally */
 }
@@ -127,14 +144,57 @@ html {
   opacity: 1; /* Ensure full opacity for the active indicator */
 }
 
-#footer{
-    #background:url(../images/banner.jpg);
-}
-
 @media (min-width: 576px) {
     .carousel-item img {
-        width: auto !important;
-        height: 400px;
-        max-height: 400px;
+        width: 100% !important;
+        height: auto;
+        object-fit: contain;
+        max-height: 380px;
     }
+}
+.overlay-container {
+  position: relative;
+  width: 100%;
+   /* Ensure the container stretches fully */
+}
+
+.row {
+  display: flex;
+  position: relative;
+  z-index: 2; /* Keeps the content on top of the image */
+}
+
+.content {
+  flex: 1; /* Allows precise positioning */
+  margin-left: 25% !important; /* Starts at 25% of the container's width */
+  background-color: rgba(255, 255, 255, 0); /* Optional background for readability */
+  padding: 1rem;
+  z-index: 3; /* Ensures the content is on top of everything */
+}
+
+.thumbnail-container {
+  position: absolute;
+  left: 0; /* Ensures the image starts at the left side */
+  width: 50%; /* Thumbnail occupies the first 25% of the container */
+  height: 100%; /* Fills the entire height of the container */
+  z-index: 1; /* Sits behind the content */
+  overflow: hidden; /* Clips overflowing image parts */
+}
+
+.thumbnail-container img {
+  height: 100%; /* Image height matches the container's height */
+  width: auto; /* Width adjusts automatically to maintain aspect ratio */
+  position: absolute; /* Allows precise positioning */
+  top: 0;
+  left: 0; /* Ensures the image aligns to the left side of the container */
+  object-fit: cover; /* Ensures the image fills the height while maintaining aspect ratio */
+
+  /* Gradient mask to create the fade effect */
+  -webkit-mask-image: linear-gradient(to left, transparent 20%, black 85%);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+
+  mask-image: linear-gradient(to left, transparent 20%, black 85%);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
 }

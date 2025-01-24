@@ -30,11 +30,11 @@ app.secret_key = os.urandom(24)
 limiter = Limiter(
     get_remote_address,  # Uses the client's IP address for rate limiting
     app=app,
-    default_limits=["200 per day", "50 per hour"]  # General rate limits for all routes
+    default_limits=["2000 per day", "500 per hour"]  # General rate limits for all routes
 )
 
 # Allowed file extensions
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic', 'webp'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -49,26 +49,33 @@ def query_blog():
     result = db.session.execute(db.select(Post).order_by(desc(Post.id)))
     posts = result.scalars().all()
     posts_len = len(posts)
-    for _ in posts:
-        print(_.title)
-    # Create 2 posts if there are no posts in the DB
+    # Create 2 posts if there are less than 2 posts in the DB
     if posts_len < 2:
         print("!")
-        first_post = Post(title="first post", author='nick', category='config', date='7/11/1981', body=1, picture=1,
-                        thumb=1)
-        second_post = Post(title="Delete this after you make your first post", author='nick', category='', date='7/11/1981', body=2)
+        first_post = Post(title="config post", author='nick', category=None, date='7/11/1981', body=1,
+                          preview='you shouldnt be seeing this', picture=1, thumb=1)
+        second_post = Post(title="Delete this after you make your first post", author='nick', category=None,
+                           date='7/11/1981', body='You should delete this', preview='you shouldnt be seeing this')
         db.session.add(first_post)
         db.session.add(second_post)
         db.session.commit()
         # Populate temporary posts
-        posts = (Post.query.all())[::-1]
+        result = db.session.execute(db.select(Post).order_by(desc(Post.id)))
+        posts = result.scalars().all()
         posts_len = len(posts)
-    print(posts[-1].thumb, posts[-1].picture, posts[-1].body )
+    categories = []
+    for _ in posts:
+        if _.category == None or _.category == 'config':
+            pass
+        elif _.category not in categories:
+            categories.append(_.category)
+
+
     hl = next(post for post in posts if post.id == int(posts[-1].body))
     f1 = next(post for post in posts if post.id == int(posts[-1].thumb))
     f2 = next(post for post in posts if post.id == int(posts[-1].picture))
 
-    return posts, posts_len, hl, f1, f2
+    return posts, posts_len, hl, f1, f2, categories
 
 # def query_carousel():
 #     all_entries = []
@@ -78,6 +85,14 @@ def query_blog():
 #             all_entries.append([_.id, _.link, _.body, _.picture, _.thumb, _.order, _.expire])
 #     entries_len = len(all_entries)
 #     return all_entries, entries_len
+
+def get_preview(body):
+    list = body.split(" ")
+    if len(list) > 20:
+        preview = (" ".join(list[0:15]))
+    else:
+        preview=list
+    return preview
 
 def get_pictures(file):
     # give secure name to file
@@ -138,7 +153,8 @@ class Post(db.Model):
     category: Mapped[str] = mapped_column(String(250), nullable=True)
     picture: Mapped[str] = mapped_column(String(250), nullable=True)
     thumb: Mapped[str] = mapped_column(String(250), nullable=True)
-    body: Mapped[str] = mapped_column(String(250), nullable=False)
+    body: Mapped[str] = mapped_column(String(12250), nullable=False)
+    preview: Mapped[str] = mapped_column(String(1250), nullable=False)
 
 # class CarouselImage(db.Model):
 #     __bind_key__ = 'carousel'  # Specify which database this model uses
@@ -171,24 +187,40 @@ def upload_image():
 
 @app.route('/')
 def home():
-    posts, posts_len, headline, f1, f2 = query_blog()
+    posts, posts_len, headline, f1, f2, categories = query_blog()
     # entries, entries_len = query_carousel()
     # return render_template("brandi.html", posts=posts, posts_len=posts_len, headline=headline, entries=entries, entries_len=entries_len)
     return render_template("brandi.html", posts=posts, posts_len=posts_len, headline=headline, f1=f1, f2=f2)
 
 @app.route('/post/<int:post_id>')
 def get_post(post_id):
-    posts, posts_len, headline, f1, f2 = query_blog()
-    categories = []
-    for post in posts:
-        if post.category == "":
-            pass
-        elif post.category not in categories:
-            categories.append(post.category)
+    posts, posts_len, headline, f1, f2, categories = query_blog()
+    # categories = []
+    # for post in posts:
+    #     if post.category == "" or post.category =='config':
+    #         pass
+    #     elif post.category not in categories:
+    #         categories.append(post.category)
     print(categories)
     post = db.get_or_404(Post, post_id)
-
     return render_template("post.html", post=post, posts=posts, posts_len=posts_len, categories=categories)
+
+@app.route('/category/<cat>')
+def category(cat):
+    print(cat)
+    posts, posts_len, headline, f1, f2, categories = query_blog()
+    # categories = []
+    # for post in posts:
+    #     if post.category == "" or post.category =='config':
+    #         print('pass')
+    #         pass
+    #     elif post.category not in categories:
+    #         print(post.category, post.id)
+    #         categories.append(post.category)
+    cat_posts = [post for post in posts if post.category == cat]
+    print(cat_posts)
+    return render_template("categories.html", category=cat, cat_posts=cat_posts, posts=posts, posts_len=posts_len, categories=categories)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")  # Allow up to 5 login attempts per minute per IP address
@@ -207,11 +239,11 @@ def login():
 
 @app.route('/blog')
 def blog():
-    posts, posts_len, headline, f1, f2 = query_blog()
+    posts, posts_len, headline, f1, f2, categories = query_blog()
     # if posts_len == 0:
     #     return render_template('blog.html', posts=posts, empty=True)
     # else:
-    return render_template('blog.html', posts=posts, headline=headline, f1=f1, f2=f2, empty=False, posts_len=posts_len)
+    return render_template('blog.html', categories=categories, posts=posts, headline=headline, f1=f1, f2=f2, empty=False, posts_len=posts_len)
 
 @app.route('/logout')
 def logout():
@@ -226,7 +258,7 @@ def admin():
     logged_in()
     print('logged in')
     print(request.method)
-    posts, posts_len, headline, f1, f2 = query_blog()
+    posts, posts_len, headline, f1, f2, categories = query_blog()
     # entries, entries_len = query_carousel()
     if request.method == 'GET':
         # return render_template('admin.html', posts=posts, posts_len=posts_len, TINY_API=TINY_API, date=CURRENT_DATE, entries=entries, entries_len=entries_len)
@@ -241,15 +273,17 @@ def admin():
             author = request.form["author"]
             category = request.form["category"]
             body = request.form['body']
+            preview = get_preview(body)
+            print(preview, type(preview))
             file = request.files.get('picture')
 
             if file and allowed_file(file.filename):
                 print('got file')
                 picture, thumb = get_pictures(file)
-                new_post = Post(title=title, author=author, category=category, date=date, body=body, picture=picture, thumb=thumb)
+                new_post = Post(title=title, author=author, category=category, date=date, body=body, preview=preview, picture=picture, thumb=thumb)
             else:
                 print('used stock photo')
-                new_post = Post(title=title, author=author, category=category, date=date, body=body, picture='stock.jpg', thumb='thmstock.jpg')
+                new_post = Post(title=title, author=author, category=category, date=date, body=body, preview=preview, picture='stock.jpg', thumb='thmstock.jpg')
             with app.app_context():
                 db.session.add(new_post)
                 db.session.commit()
@@ -285,89 +319,52 @@ def delete():
 @app.route('/update', methods=['GET', 'POST'])
 def update():
     kind = request.args.get('kind')
-    print(kind, '1')
     if kind == 'blog':
-        print(session.get('admin_logged_in'))
         logged_in()
         if request.method=='POST':
             post_id = request.form['post_id']
-            print(post_id,'this should be the post id')
-            print('2!')
-            print('another 2')
-
-            try:
-                hl = request.form['headline']
-                print("Checked hl")
+            if request.form['headline'] == "1":
+                print('Post is now Headline')
                 headline = db.get_or_404(Post, 1)
                 headline.body = post_id
                 db.session.commit()
-            except:
-                pass
-            try:
-                f1 = request.form['featured1']
-                print("Checked f1")
+            elif request.form['headline'] == "2":
+                print("Post is now Featured 1")
                 headline = db.get_or_404(Post, 1)
                 headline.thumb = post_id
                 db.session.commit()
-            except:
-                pass
-            try:
-                f2 = request.form['featured2']
-                print("Checked f2")
+            elif request.form['headline'] == "3":
+                print("Post is now Featured 2")
                 headline = db.get_or_404(Post, 1)
                 headline.picture = post_id
                 db.session.commit()
-            except:
-                pass
-            finally:
-                print('didnt work')
-                with app.app_context():
-                    post = db.get_or_404(Post, post_id)
-                    post.title = request.form["title"]
-                    post.date = request.form["date"]
-                    post.author = request.form["author"]
-                    post.category = request.form["category"]
-                    post.body = request.form["body"]
-                    file = request.files.get('picture')
-                    if file and allowed_file(file.filename):
-                        print('got file')
-                        post.picture, post.thumb = get_pictures(file)
-                        db.session.commit()
-                    else:
-                        print('used same photo')
-                        db.session.commit()
-                    return redirect(url_for('admin'))
-            # try: #check to see if featured is checkmarked
-            #     ues = request.form['featured']
-            #     headline = db.get_or_404(Post, 1)
-            #     headline.body = post_id
-            #     db.session.commit()
-            # except:
-            #     pass
-            # finally:
-            #     with app.app_context():
-            #         post = db.get_or_404(Post, post_id)
-            #         post.title = request.form["title"]
-            #         post.date = request.form["date"]
-            #         post.author = request.form["author"]
-            #         post.category = request.form["category"]
-            #         post.body = request.form["body"]
-            #         file = request.files.get('picture')
-            #         if file and allowed_file(file.filename):
-            #             print('got file')
-            #             post.picture, post.thumb = get_pictures(file)
-            #             db.session.commit()
-            #         else:
-            #             print('used stock photo')
-            #             db.session.commit()
-            #         return redirect(url_for('admin'))
+
+            with app.app_context():
+                post = db.get_or_404(Post, post_id)
+                post.title = request.form["title"]
+                post.date = request.form["date"]
+                post.author = request.form["author"]
+                post.category = request.form["category"]
+                post.body = request.form["body"]
+                post.preview = get_preview(request.form["body"])
+                file = request.files.get('picture')
+                if file and allowed_file(file.filename):
+                    print('got file')
+                    post.picture, post.thumb = get_pictures(file)
+                    db.session.commit()
+                else:
+                    print('used same photo')
+                    db.session.commit()
+                return redirect(url_for('admin'))
+
         elif request.method=='GET':
             print('GET')
-            posts, posts_len, headline, f1,f2 = query_blog()
+            posts, posts_len, headline, f1,f2, categories = query_blog()
             post_id = request.args.get('post_id')
             print(post_id)
             post = db.get_or_404(Post, post_id)
             return render_template('admin.html', update=True, post=post, posts=posts, posts_len= posts_len, post_id=post_id, TINY_API=TINY_API)
+
     elif kind == 'carousel':
         print('not blog')
         return redirect(url_for('admin'))
