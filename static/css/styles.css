@@ -166,7 +166,7 @@ html {
 
 .content {
   flex: 1; /* Allows precise positioning */
-  margin-left: 25% !important; /* Starts at 25% of the container's width */
+  margin-left: 40% !important; /* Starts at 25% of the container's width */
   background-color: rgba(255, 255, 255, 0); /* Optional background for readability */
   padding: 1rem;
   z-index: 3; /* Ensures the content is on top of everything */
